@@ -1,0 +1,22 @@
+# Core RAG orchestration framework
+langchain
+langchain.community
+
+# Vector Database: To store and retrieve text embeddings
+chromadb
+
+# Embedding Models: For converting text to numerical vectors
+# sentence-transformers is a popular choice for high-quality open-source models
+sentence-transformers
+
+# LLM Framework: To run the generator model locally
+# transformers is from Hugging Face
+transformers
+torch
+
+# PDF Document Loader
+# PyMuPDF is the library that provides the 'fitz' module. It's excellent for text extraction.
+PyMuPDF
+
+# Optional: For better environment variable management (e.g., API keys)
+python-dotenv
