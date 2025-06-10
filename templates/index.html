@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-,"/>
+    <title>PDF Pal: Q&A and Audio</title>
+    <link rel="stylesheet" href="/static/styles.css">
+</head>
+<body>
+    <div class="container">
+        <h1>PDF Pal 🤖</h1>
+        <p>Upload a PDF, then ask it questions or listen to its content.</p>
+
+        <fieldset>
+            <legend>Step 1: Upload PDF</legend>
+            <form method="post" enctype="multipart/form-data">
+                <input type="file" name="pdf_file" accept="application/pdf" required>
+                <button type="submit">Process PDF</button>
+            </form>
+        </fieldset>
+
+        <fieldset {% if not pdf_ready %}disabled{% endif %}>
+            <legend>Step 2: Interact</legend>
+            <form method="post" class="qa-form">
+                <input type="text" name="question" placeholder="Ask a question about the PDF">
+                <button type="submit">Ask</button>
+            </form>
+            <form action="/synthesize" method="post">
+                 <button type="submit">Generate Audio for Full PDF</button>
+            </form>
+        </fieldset>
+
+        {% if answer %}
+            <h2>Response:</h2>
+            <div class="answer-box">
+                <p>{{ answer }}</p>
+            </div>
+        {% endif %}
+    </div>
+</body>
+</html>
