@@ -71,7 +71,7 @@ def index():
 #        except Exception as e:
 #            return str(e), 500
 #    return "No PDF content available to synthesize.", 400
-
+#comment for the comment 
 if __name__ == '__main__':
     if not os.path.exists('static'):
         os.makedirs('static')
