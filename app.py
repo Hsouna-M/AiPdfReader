@@ -8,7 +8,7 @@ from langchain.chains import ConversationalRetrievalChain
 from langchain_groq import ChatGroq
 #from gtts import gTTS
 import os
-
+#comment for the comment
 app = Flask(__name__)
 
 # Global variables to hold the state
