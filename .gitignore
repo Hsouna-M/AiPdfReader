@@ -8,6 +8,7 @@ instance/*
 .env
 config/
 file.py
+etc/
 
 ### Flask.Python Stack ###
 # Byte-compiled / optimized / DLL files
