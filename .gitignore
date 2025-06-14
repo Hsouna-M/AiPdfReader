@@ -6,7 +6,7 @@ instance/*
 !instance/.gitignore
 .webassets-cache
 .env
-
+config/
 file.py
 
 ### Flask.Python Stack ###
