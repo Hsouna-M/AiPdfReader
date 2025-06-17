@@ -1,6 +1,8 @@
 # Core RAG orchestration framework
 langchain
 langchain.community
+langchain_google_genai
+langchain_chroma
 
 # Vector Database: To store and retrieve text embeddings
 chromadb
@@ -15,8 +17,8 @@ transformers
 torch
 
 # PDF Document Loader
-# PyMuPDF is the library that provides the 'fitz' module. It's excellent for text extraction.
-PyMuPDF
+pypdf
 
 # Optional: For better environment variable management (e.g., API keys)
 python-dotenv
+tools

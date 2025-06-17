@@ -117,7 +117,7 @@ pathlib==1.0.1
 pillow==11.2.1
 posthog==4.6.2
 propcache==0.3.1
-protobuf==5.29.5
+protobuf==6.0
 prov==2.0.2
 puremagic==1.29
 pyasn1==0.6.1
