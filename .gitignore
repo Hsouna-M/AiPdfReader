@@ -8,6 +8,7 @@ instance/*
 .env
 config/
 file.py
+trial.py
 etc/
 
 ### Flask.Python Stack ###
