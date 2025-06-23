@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-,"/>
+    <title>PDF Pal: Q&A and Audio</title>
+    <link rel="stylesheet" href="/static/styles.css">
+    <script>
+      document.addEventListener("DOMContentLoaded",()=>{
+        const button=document.getElementById("this");
+        button.addEventListener("click",()=>alert("do not fucking click this fucking button "));
+        const newElement=document.createElement("div");
+        newElement.className="container";
+        for(let i=0;i<10;i++){
+          const p=document.createElement("p");
+          p.textContent=`This is paragraph ${i+1}`;
+          newElement.appendChild(p);
+        }
+        document.body.appendChild(newElement);
+
+      //hey copilot generate a commented cheat sheet for using js
+      // 1. Select an element: const element = document.getElementById("id");
+      // 2. Add an event listener: element.addEventListener("event", function);
+      // 3. Change styles: element.style.property = "value";
+      // 4. Remove styles: element.style.property = "";
+      // 5. Use classes: element.classList.add("class"), element.classList.remove("class");
+      // 6. Create elements: const newElement = document.createElement("tag");
+      // 7. Append elements: parentElement.appendChild(newElement);
+      // 8. Set attributes: element.setAttribute("attr", "value");
+      // 9. Get attributes: const value = element.getAttribute("attr");
+      // 10. Remove attributes: element.removeAttribute("attr");
+      })
+    </script>
+  </head>
+  <body>
+    <div class="container">
+      <h1>Greeting Page</h1>
+      {%if message %}
+      <p>{{message}}</p>
+      {% endif %}
+      <button class="button" id="this">click me</button>
+    </div>
+  </body>
+</html>

@@ -2,7 +2,7 @@
 langchain
 langchain.community
 langchain_google_genai
-langchain_chroma
+langchain-huggingface
 
 # Vector Database: To store and retrieve text embeddings
 chromadb

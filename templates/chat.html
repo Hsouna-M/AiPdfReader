@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Conversational UI</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+
+        /* Webkit scrollbar styling */
+        .chat-scroll::-webkit-scrollbar {
+            width: 8px;
+        }
+        .chat-scroll::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        .chat-scroll::-webkit-scrollbar-thumb {
+            background: #e2e8f0; /* gray-200 */
+            border-radius: 4px;
+        }
+        .chat-scroll::-webkit-scrollbar-thumb:hover {
+            background: #cbd5e1; /* gray-300 */
+        }
+
+        /* Typing indicator */
+        .typing-indicator span {
+            height: 8px;
+            width: 8px;
+            background-color: #94a3b8; /* gray-400 */
+            display: inline-block;
+            border-radius: 50%;
+            animation: bounce 1.4s infinite ease-in-out both;
+        }
+        .typing-indicator span:nth-child(1) { animation-delay: -0.32s; }
+        .typing-indicator span:nth-child(2) { animation-delay: -0.16s; }
+        @keyframes bounce {
+            0%, 80%, 100% { transform: scale(0); }
+            40% { transform: scale(1.0); }
+        }
+    </style>
+</head>
+<body class="bg-white text-gray-800 flex h-screen">
+
+    <!-- Main Chat Area -->
+    <main class="flex-1 flex flex-col h-screen">
+        <header class="flex items-center justify-between p-4 border-b border-gray-200">
+            <h1 class="text-xl font-semibold">NotebookLM</h1>
+            <div class="flex items-center space-x-3">
+                <div class="w-8 h-8 rounded-full bg-indigo-600 flex items-center justify-center text-white font-bold text-sm">H</div>
+                <span class="text-sm font-medium">Human</span>
+            </div>
+        </header>
+
+        <div id="chat-container" class="flex-1 overflow-y-auto p-6 space-y-6 chat-scroll">
+            <!-- Initial Message -->
+            <div class="chat-message-ai flex items-start space-x-4">
+                <div class="flex-shrink-0 w-10 h-10 bg-blue-500 text-white flex items-center justify-center rounded-full">
+                    <svg width="20" height="20" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" clip-rule="evenodd" d="M12 4H8C5.79086 4 4 5.79086 4 8V24C4 26.2091 5.79086 28 8 28H24C26.2091 28 28 26.2091 28 24V8C28 5.79086 26.2091 4 24 4H20L12 4ZM10 8V18L15.5 14L21 17.5V8H10Z" fill="currentColor"></path></svg>
+                </div>
+                <div>
+                    <p class="bg-gray-100 p-3 rounded-lg">Hello! How can I help you today?</p>
+                </div>
+            </div>
+            <!-- This is where new messages will be added -->
+        </div>
+
+        <footer class="p-4 bg-white border-t border-gray-200">
+            <div class="max-w-3xl mx-auto">
+                <div class="relative">
+                    <input id="chat-input" type="text" placeholder="Message NotebookLM..." class="w-full py-3 pl-4 pr-12 text-sm border-gray-300 rounded-full focus:ring-blue-500 focus:border-blue-500 shadow-sm">
+                    <button id="send-btn" class="absolute inset-y-0 right-0 flex items-center justify-center w-12 h-full text-blue-600 hover:text-blue-800">
+                        <svg class="w-6 h-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                    </button>
+                </div>
+            </div>
+        </footer>
+    </main>
+    
+    <script>
+        const chatContainer = document.getElementById('chat-container');
+        const chatInput = document.getElementById('chat-input');
+        const sendBtn = document.getElementById('send-btn');
+
+        function sendMessage() {
+            const messageText = chatInput.value.trim();
+            if (messageText === '') return;
+
+            // 1. Add user's message to the chat
+            addMessage(messageText, 'user');
+
+            // 2. Clear input and show typing indicator
+            chatInput.value = '';
+            showTypingIndicator();
+
+            // 3. Simulate AI response
+            setTimeout(() => {
+                const aiResponse = "This is a simulated response. In a real application, I would process your request and generate a relevant answer.";
+                addMessage(aiResponse, 'ai');
+            }, 1500 + Math.random() * 1000);
+        }
+        
+        function addMessage(text, sender) {
+            // Remove typing indicator if it exists
+            const typingIndicator = document.getElementById('typing-indicator');
+            if (typingIndicator) {
+                typingIndicator.remove();
+            }
+
+            const messageElement = document.createElement('div');
+            let content;
+
+            if (sender === 'user') {
+                messageElement.className = 'chat-message-user flex items-start space-x-4 justify-end';
+                content = `
+                    <div>
+                        <p class="bg-blue-600 text-white p-3 rounded-lg">${text}</p>
+                    </div>
+                    <div class="flex-shrink-0 w-10 h-10 bg-indigo-600 flex items-center justify-center rounded-full text-white font-bold">H</div>
+                `;
+            } else { // AI message
+                messageElement.className = 'chat-message-ai flex items-start space-x-4';
+                content = `
+                    <div class="flex-shrink-0 w-10 h-10 bg-blue-500 text-white flex items-center justify-center rounded-full">
+                        <svg width="20" height="20" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" clip-rule="evenodd" d="M12 4H8C5.79086 4 4 5.79086 4 8V24C4 26.2091 5.79086 28 8 28H24C26.2091 28 28 26.2091 28 24V8C28 5.79086 26.2091 4 24 4H20L12 4ZM10 8V18L15.5 14L21 17.5V8H10Z" fill="currentColor"></path></svg>
+                    </div>
+                    <div>
+                        <p class="bg-gray-100 p-3 rounded-lg">${text}</p>
+                    </div>
+                `;
+            }
+
+            messageElement.innerHTML = content;
+            chatContainer.appendChild(messageElement);
+
+            // Scroll to the bottom
+            chatContainer.scrollTop = chatContainer.scrollHeight;
+        }
+
+        function showTypingIndicator() {
+            const typingIndicator = document.createElement('div');
+            typingIndicator.id = 'typing-indicator';
+            typingIndicator.className = 'flex items-start space-x-4';
+            typingIndicator.innerHTML = `
+                <div class="flex-shrink-0 w-10 h-10 bg-blue-500 text-white flex items-center justify-center rounded-full">
+                    <svg width="20" height="20" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" clip-rule="evenodd" d="M12 4H8C5.79086 4 4 5.79086 4 8V24C4 26.2091 5.79086 28 8 28H24C26.2091 28 28 26.2091 28 24V8C28 5.79086 26.2091 4 24 4H20L12 4ZM10 8V18L15.5 14L21 17.5V8H10Z" fill="currentColor"></path></svg>
+                </div>
+                <div class="bg-gray-100 p-3 rounded-lg typing-indicator">
+                    <span></span><span></span><span></span>
+                </div>
+            `;
+            chatContainer.appendChild(typingIndicator);
+            chatContainer.scrollTop = chatContainer.scrollHeight;
+        }
+
+        // Event Listeners
+        sendBtn.addEventListener('click', sendMessage);
+        chatInput.addEventListener('keydown', function(event) {
+            if (event.key === 'Enter') {
+                sendMessage();
+            }
+        });
+
+    </script>
+</body>
+</html>

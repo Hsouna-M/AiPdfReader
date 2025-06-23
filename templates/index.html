@@ -1,40 +1,131 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-,"/>
-    <title>PDF Pal: Q&A and Audio</title>
-    <link rel="stylesheet" href="/static/styles.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NotebookLM Clone</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts: Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* Custom styles */
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8fafc; /* Tailwind gray-50 */
+            position: relative;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Gradient background effect */
+        body::before {
+            content: '';
+            position: absolute;
+            left: 50%;
+            bottom: 0;
+            transform: translateX(-50%);
+            width: 100%;
+            height: 60%;
+            background: radial-gradient(circle at bottom, rgba(204, 251, 241, 0.4), rgba(248, 250, 252, 0) 70%);
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        /* Ensure content is above the gradient */
+        .content-wrapper {
+            position: relative;
+            z-index: 1;
+            flex-grow: 1;
+        }
+    </style>
 </head>
 <body>
-    <div class="container">
-        <h1>PDF Pal 🤖</h1>
-        <p>Upload a PDF, then ask it questions or listen to its content.</p>
 
-        <fieldset>
-            <legend>Step 1: Upload PDF</legend>
-            <form method="post" enctype="multipart/form-data">
-                <input type="file" name="pdf_file" accept="application/pdf" required>
-                <button type="submit">Process PDF</button>
-            </form>
-        </fieldset>
+    <div class="content-wrapper">
+        <!-- Header -->
+        <header class="py-4 px-4 sm:px-6 lg:px-8">
+            <nav class="flex items-center justify-between max-w-7xl mx-auto">
+                <!-- Logo -->
+                <div class="flex items-center space-x-2">
+                    <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" class="text-blue-600">
+                        <path fill-rule="evenodd" clip-rule="evenodd" d="M12 4H8C5.79086 4 4 5.79086 4 8V24C4 26.2091 5.79086 28 8 28H24C26.2091 28 28 26.2091 28 24V8C28 5.79086 26.2091 4 24 4H20L12 4ZM10 8V18L15.5 14L21 17.5V8H10Z" fill="currentColor"/>
+                    </svg>
+                    <span class="font-bold text-xl text-gray-800">NotebookLM</span>
+                </div>
+                <!-- Right side controls -->
+                <div class="flex items-center space-x-4">
+                    <span class="text-xs font-bold tracking-wider text-purple-700 bg-purple-100 px-2 py-1 rounded-md">PRO</span>
+                    <div class="w-8 h-8 rounded-full bg-indigo-600 flex items-center justify-center text-white font-bold text-sm cursor-pointer">
+                        H
+                    </div>
+                </div>
+            </nav>
+        </header>
 
-        <fieldset {% if not pdf_ready %}disabled{% endif %}>
-            <legend>Step 2: Interact</legend>
-            <form method="post" class="qa-form">
-                <input type="text" name="question" placeholder="Ask a question about the PDF">
-                <button type="submit">Ask</button>
+        <!-- Main Content -->
+        <main class="max-w-4xl mx-auto px-4 py-16 sm:px-6 lg:px-8 text-center">
+            <h1 class="text-4xl font-bold text-gray-800 tracking-tight mb-16">
+                Start by creating a notebook or by adding sources you upload
+            </h1>
+            <form method="POST" enctype="multipart/form-data">
+                <input type="file" name="pdf_file" class="border border-gray-300 rounded-md px-4 py-2 w-full" accept="application/pdf" required/>
+                <button type="submit" class="mt-4 bg-blue-600 text-white rounded-md px-4 py-2">Create Notebook</button>
             </form>
-            <form action="/synthesize" method="post">
-                 <button type="submit">Generate Audio for Full PDF</button>
-            </form>
-        </fieldset>
 
-        {% if answer %}
-            <h2>Response:</h2>
-            <div class="answer-box">
-                <p>{{ answer }}</p>
+            <!-- Features Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
+                <!-- Feature 1 -->
+                <div class="flex flex-col items-center">
+                    <div class="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mb-6">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-blue-600"><path d="M3 10v1a3 3 0 0 0 3 3v0a3 3 0 0 0 3-3v-1M3 15v2a3 3 0 0 0 3 3v0a3 3 0 0 0 3-3v-2m-4 1h.01M15 8h4a2 2 0 0 1 2 2v6a2 2 0 0 1-2 2h-4l-3 3v-3H9a2 2 0 0 1-2-2V10a2 2 0 0 1 2-2h1m5 2.5a.5.5 0 1 1-1 0 .5.5 0 0 1 1 0Z"/><path d="M12 10.5a.5.5 0 1 1-1 0 .5.5 0 0 1 1 0Z"/><path d="M18 10.5a.5.5 0 1 1-1 0 .5.5 0 0 1 1 0Z"/></svg>
+                    </div>
+                    <h2 class="text-xl font-semibold text-gray-900 mb-2">Gain new understandings about any document</h2>
+                    <p class="text-gray-600 leading-relaxed">Convert complex material into easy-to-understand formats like Audio Overviews,</p>
+                </div>
+
+                <!-- Feature 2 -->
+                <div class="flex flex-col items-center">
+                    <div class="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mb-6">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-blue-600"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" x2="12" y1="3" y2="15"/></svg>
+                    </div>
+                    <h2 class="text-xl font-semibold text-gray-900 mb-2">A chatbot grounded in your sources</h2>
+                    <p class="text-gray-600 leading-relaxed">Upload your documents and NotebookLM will answer detailed questions or surface key insights</p>
+                </div>
             </div>
-        {% endif %}
+        </main>
     </div>
+    
+    <footer class="w-full py-12 px-4 flex-shrink-0">
+        <div class="max-w-4xl mx-auto flex flex-col items-center space-y-6">
+            <a href="#" class="font-medium text-blue-600 hover:text-blue-800">Try an example notebook</a>
+            <button class="flex items-center space-x-2 bg-gray-800 text-white font-semibold py-3 px-6 rounded-full shadow-lg hover:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-800 transition-transform transform hover:scale-105" id="create-notebook-button-home">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+                <span>Create new notebook</span>
+            </button>
+        </div>
+    </footer>
+
+    <div class="modal-overlay bg-black bg-opacity-50 fixed inset-0 z-50 hidden" id="popup-modal">
+        <div class="modal-content bg-white rounded-lg shadow-lg max-w-md mx-auto mt-20 p-6">
+            <h2 class="text-2xl font-semibold text-gray-800 mb-4">Create New Notebook</h2>
+            <button id="closeModalXBtn" class="absolute top-3 right-3 text-gray-400 hover:text-gray-600">
+                close
+            </button>
+            <form enctype="multipart/form-data" class="space-y-4 content-center">
+                <div class="mb-4">
+                    <label for="notebook-name" class="block text-sm font-medium text-gray-700 mb-1">Notebook Name</label>
+                    <input type="text" id="notebook-name" class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Enter notebook name">
+                    <label for="file" class="mt-4 block text-sm font-medium text-gray-700 mb-1">Upload File</label>
+                    <input type="file" id="file" class=" w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Upload file" accept="application/pdf" multiple>
+                </div>
+                <button type="submit" class="w-full bg-blue-600 text-white font-semibold py-2 rounded-md hover:bg-blue-700 transition-colors" id="create-notebook-button-pop">Create Notebook</button>
+            </form>
+        </div>
+    </div>
+
 </body>
 </html>

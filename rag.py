@@ -138,7 +138,7 @@ def getConversationalRagChain(filePath) :
         filePath(str): file path
 
     Returns: 
-        conversationalRagChain(RunnableWithMessageHistory): instance of the RunnableWithMessageHistory class with a wrapped base_rag_chain
+        conversationalRagChain(RunnableWithMessageHistory): instance of the RunnableWithMessageHistory class with a wrapped a memoryLess rag chain 
 
     """
 
@@ -158,6 +158,22 @@ def getConversationalRagChain(filePath) :
     return chain_with_history 
 
 
+def makeQuery(query:str) -> dict:
+    return {"question":query} 
+
+
+def chat(conversationalRagChain:RunnableWithMessageHistory, config:dict ,query:str)->str:
+    """multiple invokations in the same conversation store 
+    
+    Args:
+        conversationalRagChain: wrapped rag chain with a conversation memory
+        config: dict with a unique session id  
+        query: dict the user query with a question key mark
+    
+    Returns:
+        the response
+    """
+    return conversationalRagChain.invoke(makeQuery(query=query),config)
 
 
 
@@ -165,17 +181,28 @@ def getConversationalRagChain(filePath) :
 # history=getSessionHistory("1234")
 # history.add_messages(AIMessage(content="this is an ai message"))
 # history.add_messages(AIMessage(content="this is another meassage from the ai"))
-
 # print(store)
 
-# converstaion=getConversationalRagChain()
+# conversation=getConversationalRagChain("etc/document.pdf")
+# result=chat(conversation,getConfig(),"what is the closest person to a superior man")
+# print(result)
 # result=converstaion.invoke(
 #     {"question":"this is a quesion"},
 #     config=getConfig()
 #     )
 # print(result)
 
-####RETRIEVER TEST
-conversation = getConversationalRagChain("etc/document.pdf")
-result = conversation.invoke({"question":"what is a superior man"},config=getConfig())
-print(result)
+# config=getConfig()
+# conversation = getConversationalRagChain("etc/document.pdf")
+
+# for chunk in conversation.stream({"question":"what is a superior man"},config=config):
+#     print(chunk,end="",flush=True)
+# print("")
+# for chunk in conversation.stream({"question":"what have asked you before this and what did you respond and why "},config=config):
+#     print(chunk,end="",flush=True)
+# print("")
+# for chunk in conversation.stream({"question":"in that reagards what does it mean to be free as a man "},config=config):
+#     print(chunk,end="",flush=True)
+# print("")
+# for chunk in conversation.stream({"question":"based on youre previous repond what is a high value women"},config=config):
+#     print(chunk,end="",flush=True)
