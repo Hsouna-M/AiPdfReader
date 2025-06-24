@@ -1,3 +1,4 @@
+flask
 # Core RAG orchestration framework
 langchain
 langchain.community
@@ -13,11 +14,9 @@ sentence-transformers
 
 # LLM Framework: To run the generator model locally
 # transformers is from Hugging Face
-transformers
-torch
 
 # PDF Document Loader
-pypdf
+pypdf2
 
 # Optional: For better environment variable management (e.g., API keys)
 python-dotenv
